@@ -127,6 +127,7 @@ func getResources() map[string]*schema.Resource {
 		"snowflake_task":                      resources.Task(),
 		"snowflake_user":                      resources.User(),
 		"snowflake_view":                      resources.View(),
+		"snowflake_function":                  resources.Udf(),
 		"snowflake_warehouse":                 resources.Warehouse(),
 	}
 

@@ -54,7 +54,6 @@ var udfSchema = map[string]*schema.Schema{
 	"language": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Default:     false,
 		Description: "Specifies the language used in the body of the udf.",
 	},
 	"argument": {
@@ -265,7 +264,7 @@ func ReadUdf(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	err = d.Set("is_secure", v.IsSecure)
+	err = d.Set("is_secure", v.IsSecure.String == "Y")
 	if err != nil {
 		return err
 	}

@@ -231,28 +231,28 @@ func (vb *UdfBuilder) Unsecure() (string, error) {
 	return fmt.Sprintf(`ALTER FUNCTION %v %v UNSET SECURE`, qn, dataTypes), nil
 }
 
-// // ChangeComment returns the SQL query that will update the comment on the view.
-// // Note that comment is the only parameter, if more are released this should be
-// // abstracted as per the generic builder.
-// func (vb *ViewBuilder) ChangeComment(c string) (string, error) {
-// 	qn, err := vb.QualifiedName()
-// 	if err != nil {
-// 		return "", err
-// 	}
+// ChangeComment returns the SQL query that will update the comment on the view.
+// Note that comment is the only parameter, if more are released this should be
+// abstracted as per the generic builder.
+func (vb *UdfBuilder) ChangeComment(c string) (string, error) {
+	qn, err := vb.QualifiedName()
+	if err != nil {
+		return "", err
+	}
 
-// 	return fmt.Sprintf(`ALTER VIEW %v SET COMMENT = '%v'`, qn, EscapeString(c)), nil
-// }
+	return fmt.Sprintf(`ALTER FUNCTION %v SET COMMENT = '%v'`, qn, EscapeString(c)), nil
+}
 
-// // RemoveComment returns the SQL query that will remove the comment on the view.
-// // Note that comment is the only parameter, if more are released this should be
-// // abstracted as per the generic builder.
-// func (vb *ViewBuilder) RemoveComment() (string, error) {
-// 	qn, err := vb.QualifiedName()
-// 	if err != nil {
-// 		return "", err
-// 	}
-// 	return fmt.Sprintf(`ALTER VIEW %v UNSET COMMENT`, qn), nil
-// }
+// RemoveComment returns the SQL query that will remove the comment on the view.
+// Note that comment is the only parameter, if more are released this should be
+// abstracted as per the generic builder.
+func (vb *UdfBuilder) RemoveComment() (string, error) {
+	qn, err := vb.QualifiedName()
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf(`ALTER FUNCTION %v UNSET COMMENT`, qn), nil
+}
 
 // Show returns the SQL query that will show the row representing this udf.
 func (vb *UdfBuilder) Show() string {
@@ -273,12 +273,12 @@ func (vb *UdfBuilder) Drop() (string, error) {
 
 type udf struct {
 	Comment      sql.NullString `db:"comment"`
-	IsSecure     bool           `db:"is_secure"`
+	IsSecure     sql.NullString `db:"is_secure"`
 	Name         sql.NullString `db:"name"`
 	SchemaName   sql.NullString `db:"schema_name"`
 	Language     sql.NullString `db:"language"`
 	Arguments    sql.NullString `db:"arguments"`
-	DatabaseName sql.NullString `db:"database_name"`
+	DatabaseName sql.NullString `db:"catalog_name"`
 }
 
 func ScanUdf(row *sqlx.Row) (*udf, error) {
