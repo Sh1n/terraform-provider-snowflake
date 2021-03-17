@@ -50,6 +50,13 @@ func TestUdf(t *testing.T) {
 	r.NoError(err)
 	r.Equal(`CREATE SECURE FUNCTION "some_database"."some_schema"."test" ("arg1" OBJECT, "arg12" VARCHAR) RETURNS VARIANT AS $$ PARSE_JSON(BASE64_DECODE_STRING(parent:child::string)) $$`, q)
 
+	v.WithLanguage("javascript")
+	r.Equal("javascript", v.language)
+
+	q, err = v.Create()
+	r.NoError(err)
+	r.Equal(`CREATE SECURE FUNCTION "some_database"."some_schema"."test" ("arg1" OBJECT, "arg12" VARCHAR) RETURNS VARIANT LANGUAGE javascript AS $$ PARSE_JSON(BASE64_DECODE_STRING(parent:child::string)) $$`, q)
+
 	q, err = v.Secure()
 	r.NoError(err)
 	r.Equal(`ALTER FUNCTION "some_database"."some_schema"."test" (OBJECT, VARCHAR) SET SECURE`, q)

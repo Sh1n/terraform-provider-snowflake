@@ -130,8 +130,8 @@ func (vb *UdfBuilder) WithReturnType(s string) *UdfBuilder {
 }
 
 // WithBody adds the SQL body to be used for the function
-func (vb *UdfBuilder) WithBody(s string) *UdfBuilder {
-	vb.body = s
+func (vb *UdfBuilder) WithBody(b string) *UdfBuilder {
+	vb.body = b
 	return vb
 }
 
